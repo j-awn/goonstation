@@ -43,7 +43,7 @@
 		tgui_not_incapacitated_state.can_use_topic(src, user)
 	)
 
-/obj/submachine/slot_machine/ui_act(action, params)
+/obj/submachine/slot_machine/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
 	if(..())
 		return
 	switch(action)
@@ -54,8 +54,7 @@
 				usr.drop_item()
 				O.set_loc(src)
 				src.scan = O
-				return TRUE
-			return FALSE
+				. = TRUE
 		if ("play")
 			if (src.working) return TRUE
 			if (!src.scan) return TRUE
@@ -71,6 +70,7 @@
 
 			playsound(src.loc, "sound/machines/ding.ogg", 50, 1)
 			. = TRUE
+			ui_interact(usr, ui)
 			SPAWN_DBG(2.5 SECONDS) // why was this at ten seconds, christ
 				if (roll == 1)
 					for(var/mob/O in hearers(src, null))
@@ -121,8 +121,7 @@
 			src.scan = null
 			src.working = FALSE
 			src.icon_state = "slots-off" // just in case, some fucker broke it earlier
-			for(var/mob/O in hearers(src, null))
-				O.show_message("<span class='subtle'><b>[src]</b> says, 'Thank you for playing!'</span>", 1)
+			src.visible_message("<span class='subtle'><b>[src]</b> says, 'Thank you for playing!'</span>")
 			. = TRUE
 
 	src.add_fingerprint(usr)
@@ -137,7 +136,7 @@
 			usr.drop_item()
 			I.set_loc(src)
 			src.scan = I
-			ui_interact(user, ui)
+			ui_interact(user)
 	else
 		. = ..()
 

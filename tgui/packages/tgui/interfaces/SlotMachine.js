@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020 @zewaka
+ * Copyright (c) 2020 @ZeWaka
  * SPDX-License-Identifier: ISC
  */
 
@@ -28,6 +28,7 @@ export const SlotMachine = (props, context) => {
             )}
           </Box>
         )}
+        { JSON.stringify(context.store.getState()) }
       </Window.Content>
     </Window>
   );
